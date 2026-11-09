@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircle, TrendingUp, Sparkles, Download, RefreshCw, Search, Trash2, ArrowUpRight, ArrowDownRight, PieChart, Wallet, Settings as SettingsIcon, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { PlusCircle, TrendingUp, Sparkles, Download, RefreshCw, Search, Trash2, ArrowUpRight, ArrowDownRight, PieChart, Wallet, Settings as SettingsIcon, LayoutDashboard, ShieldCheck, Target } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Expenses from './components/Expenses';
 import Investments from './components/Investments';
+import GoalsAndBills from './components/GoalsAndBills';
 import Settings from './components/Settings';
 import TransactionModal from './components/TransactionModal';
 import AssetModal from './components/AssetModal';
@@ -26,6 +27,16 @@ export default function App() {
     { id: 2, name: 'Nigerian Stocks (Zenith Bank)', symbol: 'ZENITHBANK', shares: 500, valuePerShare: 38, type: 'Stock' }
   ]));
 
+  const [goals, setGoals] = useState(() => loadData('fundflow_goals', [
+    { id: 1, name: 'Emergency Fund', target: 300000, current: 120000 },
+    { id: 2, name: 'New Laptop', target: 600000, current: 250000 }
+  ]));
+
+  const [bills, setBills] = useState(() => loadData('fundflow_bills', [
+    { id: 1, name: 'Netflix Subscription', amount: 5000, dueDate: 'Every 28th' },
+    { id: 2, name: 'DSTV Compact', amount: 12500, dueDate: 'Every 15th' }
+  ]));
+
   const [budgetLimit, setBudgetLimit] = useState(() => loadData('fundflow_budget', 150000));
 
   const [showTxModal, setShowTxModal] = useState(false);
@@ -39,6 +50,14 @@ export default function App() {
   useEffect(() => {
     saveData('fundflow_assets', assets);
   }, [assets]);
+
+  useEffect(() => {
+    saveData('fundflow_goals', goals);
+  }, [goals]);
+
+  useEffect(() => {
+    saveData('fundflow_bills', bills);
+  }, [bills]);
 
   useEffect(() => {
     saveData('fundflow_budget', budgetLimit);
@@ -120,11 +139,21 @@ export default function App() {
             setShowAssetModal={setShowAssetModal}
           />
         )}
+        {activeTab === 'goals' && (
+          <GoalsAndBills 
+            goals={goals}
+            setGoals={setGoals}
+            bills={bills}
+            setBills={setBills}
+          />
+        )}
         {activeTab === 'settings' && (
           <Settings 
             transactions={transactions}
             assets={assets}
             budgetLimit={budgetLimit}
+            goals={goals}
+            bills={bills}
           />
         )}
       </main>

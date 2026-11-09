@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Wallet, TrendingUp, Settings as SettingsIcon, ShieldCheck, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Wallet, TrendingUp, Target, Settings as SettingsIcon, ShieldCheck, HelpCircle } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, onOpenGuide }) {
   return (
@@ -36,10 +36,16 @@ export default function Navbar({ activeTab, setActiveTab, onOpenGuide }) {
             <TrendingUp size={20} /> Investments
           </button>
           <button 
+            onClick={() => setActiveTab('goals')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab === 'goals' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'}`}
+          >
+            <Target size={20} /> Goals & Bills
+          </button>
+          <button 
             onClick={() => setActiveTab('settings')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab === 'settings' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'}`}
           >
-            <SettingsIcon size={20} /> Settings & Privacy
+            <SettingsIcon size={20} /> Settings & PDF
           </button>
           <button 
             onClick={onOpenGuide}
@@ -63,36 +69,36 @@ export default function Navbar({ activeTab, setActiveTab, onOpenGuide }) {
           onClick={() => setActiveTab('dashboard')}
           className={`flex flex-col items-center gap-1 ${activeTab === 'dashboard' ? 'text-blue-500' : 'text-slate-400'}`}
         >
-          <LayoutDashboard size={20} />
-          <span className="text-[10px]">Dashboard</span>
+          <LayoutDashboard size={18} />
+          <span className="text-[9px]">Dashboard</span>
         </button>
         <button 
           onClick={() => setActiveTab('expenses')}
           className={`flex flex-col items-center gap-1 ${activeTab === 'expenses' ? 'text-blue-500' : 'text-slate-400'}`}
         >
-          <Wallet size={20} />
-          <span className="text-[10px]">Expenses</span>
+          <Wallet size={18} />
+          <span className="text-[9px]">Expenses</span>
         </button>
         <button 
           onClick={() => setActiveTab('investments')}
           className={`flex flex-col items-center gap-1 ${activeTab === 'investments' ? 'text-blue-500' : 'text-slate-400'}`}
         >
-          <TrendingUp size={20} />
-          <span className="text-[10px]">Investments</span>
+          <TrendingUp size={18} />
+          <span className="text-[9px]">Investments</span>
+        </button>
+        <button 
+          onClick={() => setActiveTab('goals')}
+          className={`flex flex-col items-center gap-1 ${activeTab === 'goals' ? 'text-blue-500' : 'text-slate-400'}`}
+        >
+          <Target size={18} />
+          <span className="text-[9px]">Goals & Bills</span>
         </button>
         <button 
           onClick={() => setActiveTab('settings')}
           className={`flex flex-col items-center gap-1 ${activeTab === 'settings' ? 'text-blue-500' : 'text-slate-400'}`}
         >
-          <SettingsIcon size={20} />
-          <span className="text-[10px]">Settings</span>
-        </button>
-        <button 
-          onClick={onOpenGuide}
-          className="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500"
-        >
-          <HelpCircle size={20} />
-          <span className="text-[10px]">Guide</span>
+          <SettingsIcon size={18} />
+          <span className="text-[9px]">Settings</span>
         </button>
       </nav>
     </>
