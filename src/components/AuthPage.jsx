@@ -7,11 +7,9 @@ export default function AuthPage({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isForgot, setIsForgot] = useState(false);
-  const [resetCode, setResetCode] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate successful authentication with 3D UI effect
     onLoginSuccess({ name: name || 'FundFlow User', email });
   };
 
@@ -135,8 +133,11 @@ export default function AuthPage({ onLoginSuccess }) {
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-xs text-slate-400 hover:text-white"
               >
-                {isLogin ? "Don't have an account? <span class='text-blue-400 font-semibold'>Register</span>" : "Already have an account? <span class='text-blue-400 font-semibold'>Sign In</span>"}
-                {isLogin ? " Don't have an account? Register" : " Already have an account? Sign In"}
+                {isLogin ? (
+                  <>Don't have an account? <span className="text-blue-400 font-semibold">Register</span></>
+                ) : (
+                  <>Already have an account? <span className="text-blue-400 font-semibold">Sign In</span></>
+                )}
               </button>
             </div>
           </form>
