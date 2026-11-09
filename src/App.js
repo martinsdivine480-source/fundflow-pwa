@@ -155,9 +155,6 @@ export default function App() {
             budgetLimit={budgetLimit}
             goals={goals}
             bills={bills}
-            onLogout={() => {
-              if (window.confirm("Reset session?")) window.location.reload();
-            }}
           />
         )}
       </main>

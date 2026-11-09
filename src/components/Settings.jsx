@@ -1,7 +1,7 @@
 import React from 'react';
-import { Download, RefreshCw, FileText, LogOut } from 'lucide-react';
+import { Download, RefreshCw, FileText } from 'lucide-react';
 
-export default function Settings({ transactions, assets, budgetLimit, goals, bills, onLogout }) {
+export default function Settings({ transactions, assets, budgetLimit, goals, bills }) {
   const exportPDFStatement = () => {
     const reportWindow = window.open('', '_blank');
     const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
@@ -122,20 +122,6 @@ export default function Settings({ transactions, assets, budgetLimit, goals, bil
             <RefreshCw size={16} /> Reset All Data
           </button>
         </div>
-      </div>
-
-      {/* Logout Section */}
-      <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl space-y-4">
-        <h3 className="font-bold text-lg text-white">Session</h3>
-        <p className="text-sm text-slate-300">
-          Sign out of your account securely.
-        </p>
-        <button 
-          onClick={onLogout}
-          className="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow-lg shadow-rose-600/20"
-        >
-          <LogOut size={16} /> Log Out
-        </button>
       </div>
     </div>
   );
