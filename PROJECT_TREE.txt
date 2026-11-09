@@ -1,0 +1,21 @@
+fundflow_pwa/
+├── public/
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+├── src/
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Expenses.jsx
+│   │   ├── Investments.jsx
+│   │   ├── Settings.jsx
+│   │   ├── TransactionModal.jsx
+│   │   └── AssetModal.jsx
+│   ├── utils/
+│   │   └── storage.js
+│   ├── App.jsx
+│   ├── index.css
+│   └── index.js
+├── package.json
+└── README.md
