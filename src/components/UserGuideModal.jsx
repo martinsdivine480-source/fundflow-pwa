@@ -6,17 +6,19 @@ export default function UserGuideModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
-      <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl w-full max-w-lg shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
-        <div className="flex justify-between items-center border-b border-slate-800 pb-3 sticky top-0 bg-slate-950 z-10">
+      <div className="bg-slate-950 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[85vh]">
+        {/* Constant Header */}
+        <div className="flex justify-between items-center border-b border-slate-800 p-5 bg-slate-950 rounded-t-2xl shrink-0">
           <h3 className="font-bold text-lg text-white flex items-center gap-2">
             <Sparkles className="text-blue-400" size={20} /> Welcome to FundFlow NG Guide
           </h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-1 bg-slate-900 rounded-lg">
+          <button onClick={onClose} className="text-slate-400 hover:text-white p-1.5 bg-slate-900 rounded-lg">
             <X size={18} />
           </button>
         </div>
 
-        <div className="space-y-4 text-sm text-slate-300">
+        {/* Scrollable Content Body */}
+        <div className="p-6 space-y-4 text-sm text-slate-300 overflow-y-auto flex-1">
           <div className="flex items-start gap-3 bg-slate-900 p-3.5 rounded-xl border border-slate-800">
             <div className="p-2 bg-blue-600/20 text-blue-400 rounded-lg shrink-0 mt-0.5">
               <Wallet size={18} />
@@ -78,10 +80,11 @@ export default function UserGuideModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        <div className="pt-2 flex justify-end">
+        {/* Constant Footer */}
+        <div className="border-t border-slate-800 p-4 bg-slate-950 rounded-b-2xl flex justify-end shrink-0">
           <button 
             onClick={onClose}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-blue-600/20"
+            className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-blue-600/20 transition"
           >
             Got It, Let's Start!
           </button>
