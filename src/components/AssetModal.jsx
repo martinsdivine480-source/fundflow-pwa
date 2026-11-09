@@ -5,7 +5,7 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
   const [symbol, setSymbol] = React.useState('');
   const [shares, setShares] = React.useState('');
   const [price, setPrice] = React.useState('');
-  const [type, setType] = React.useState('Stock');
+  const [type, setType] = React.useState('Savings');
 
   if (!isOpen) return null;
 
@@ -15,7 +15,7 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
     onAdd({
       id: Date.now(),
       name,
-      symbol: symbol || 'ASSET',
+      symbol: symbol || 'NGN',
       shares: parseFloat(shares),
       valuePerShare: parseFloat(price),
       type
@@ -30,7 +30,7 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl w-full max-w-md shadow-2xl">
-        <h3 className="font-bold text-lg text-white mb-4">Add Investment Asset</h3>
+        <h3 className="font-bold text-lg text-white mb-4">Add Nigerian Investment Asset</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-xs text-slate-400 block mb-1">Asset Name</label>
@@ -38,7 +38,7 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
               type="text" 
               value={name} 
               onChange={e => setName(e.target.value)} 
-              placeholder="e.g. S&P 500 ETF, Apple Stock, Bitcoin" 
+              placeholder="e.g. Zenith Bank, Treasury Bills" 
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
               required
             />
@@ -50,7 +50,7 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
                 type="text" 
                 value={symbol} 
                 onChange={e => setSymbol(e.target.value)} 
-                placeholder="AAPL, BTC" 
+                placeholder="ZENITHBANK" 
                 className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -61,34 +61,34 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
                 onChange={e => setType(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
               >
-                <option value="Stock">Stock</option>
+                <option value="Savings">Savings / T-Bills</option>
+                <option value="Stock">Nigerian Stock (NGX)</option>
                 <option value="Crypto">Crypto</option>
                 <option value="Real Estate">Real Estate</option>
-                <option value="Savings">Savings</option>
               </select>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-slate-400 block mb-1">Number of Shares</label>
+              <label className="text-xs text-slate-400 block mb-1">Units / Quantity</label>
               <input 
                 type="number" 
                 step="any"
                 value={shares} 
                 onChange={e => setShares(e.target.value)} 
-                placeholder="10" 
+                placeholder="100" 
                 className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
                 required
               />
             </div>
             <div>
-              <label className="text-xs text-slate-400 block mb-1">Price per Share ($)</label>
+              <label className="text-xs text-slate-400 block mb-1">Price per Unit (₦)</label>
               <input 
                 type="number" 
                 step="any"
                 value={price} 
                 onChange={e => setPrice(e.target.value)} 
-                placeholder="150.00" 
+                placeholder="38.00" 
                 className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
                 required
               />

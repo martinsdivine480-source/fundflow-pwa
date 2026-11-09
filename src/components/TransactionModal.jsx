@@ -4,7 +4,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
   const [title, setTitle] = React.useState('');
   const [amount, setAmount] = React.useState('');
   const [type, setType] = React.useState('expense');
-  const [category, setCategory] = React.useState('Food');
+  const [category, setCategory] = React.useState('Airtime & Data');
 
   if (!isOpen) return null;
 
@@ -27,7 +27,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl w-full max-w-md shadow-2xl">
-        <h3 className="font-bold text-lg text-white mb-4">Add Transaction</h3>
+        <h3 className="font-bold text-lg text-white mb-4">Add Naira Transaction</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-xs text-slate-400 block mb-1">Type</label>
@@ -44,7 +44,7 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
                 onClick={() => setType('income')}
                 className={`py-2 rounded-xl text-sm font-semibold border ${type === 'income' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'border-slate-800 text-slate-400'}`}
               >
-                Income
+                Income (Salary)
               </button>
             </div>
           </div>
@@ -54,13 +54,13 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
               type="text" 
               value={title} 
               onChange={e => setTitle(e.target.value)} 
-              placeholder="e.g. Grocery shopping, Salary" 
+              placeholder="e.g. MTN Airtime, Salary" 
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
               required
             />
           </div>
           <div>
-            <label className="text-xs text-slate-400 block mb-1">Amount ($)</label>
+            <label className="text-xs text-slate-400 block mb-1">Amount (₦)</label>
             <input 
               type="number" 
               value={amount} 
@@ -77,11 +77,12 @@ export default function TransactionModal({ isOpen, onClose, onAdd }) {
               onChange={e => setCategory(e.target.value)}
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
             >
-              <option value="Food">Food & Dining</option>
+              <option value="Airtime & Data">Airtime & Data</option>
+              <option value="Food">Food & Groceries</option>
               <option value="Housing">Housing & Rent</option>
-              <option value="Utilities">Utilities</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Salary">Salary</option>
+              <option value="Utilities">Utilities (Electricity)</option>
+              <option value="Transport">Transport</option>
+              <option value="Salary">Salary / Income</option>
               <option value="Other">Other</option>
             </select>
           </div>

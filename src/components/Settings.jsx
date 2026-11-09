@@ -7,7 +7,7 @@ export default function Settings({ transactions, assets, budgetLimit }) {
       <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl space-y-4">
         <h3 className="font-bold text-lg text-white">Privacy & Data Management</h3>
         <p className="text-sm text-slate-300 leading-relaxed">
-          FundFlow is built as a privacy-first Progressive Web App (PWA). All your financial records, budgets, and investments are stored locally in your browser's secure storage (`localStorage`). No servers or third parties ever access your financial data.
+          FundFlow NG stores all your Naira transactions, airtime logs, and budgets locally and securely in your browser. No servers or third parties ever access your financial data.
         </p>
         <div className="pt-4 border-t border-slate-800 flex flex-wrap gap-4">
           <button 
@@ -15,7 +15,7 @@ export default function Settings({ transactions, assets, budgetLimit }) {
               const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, assets, budgetLimit }, null, 2));
               const downloadAnchor = document.createElement('a');
               downloadAnchor.setAttribute("href", dataStr);
-              downloadAnchor.setAttribute("download", `fundflow_backup_${new Date().toISOString().split('T')[0]}.json`);
+              downloadAnchor.setAttribute("download", `fundflow_ng_backup_${new Date().toISOString().split('T')[0]}.json`);
               document.body.appendChild(downloadAnchor);
               downloadAnchor.click();
               downloadAnchor.remove();
