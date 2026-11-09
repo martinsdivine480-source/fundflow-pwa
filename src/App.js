@@ -10,9 +10,11 @@ import TransactionModal from './components/TransactionModal';
 import AssetModal from './components/AssetModal';
 import UserGuideModal from './components/UserGuideModal';
 import SalaryPlannerModal from './components/SalaryPlannerModal';
+import AuthPage from './components/AuthPage';
 import { loadData, saveData } from './utils/storage';
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(() => loadData('fundflow_user', null));
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showGuide, setShowGuide] = useState(false);
   
@@ -45,6 +47,10 @@ export default function App() {
   const [showSalaryPlanner, setShowSalaryPlanner] = useState(false);
 
   useEffect(() => {
+    saveData('fundflow_user', currentUser);
+  }, [currentUser]);
+
+  useEffect(() => {
     saveData('fundflow_transactions', transactions);
   }, [transactions]);
 
@@ -63,6 +69,10 @@ export default function App() {
   useEffect(() => {
     saveData('fundflow_budget', budgetLimit);
   }, [budgetLimit]);
+
+  if (!currentUser) {
+    return <AuthPage onLoginSuccess={(user) => setCurrentUser(user)} />;
+  }
 
   const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + Number(t.amount), 0);
   const totalExpense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + Number(t.amount), 0);
@@ -90,7 +100,7 @@ export default function App() {
         </div>
         <div className="hidden md:block">
           <h2 className="text-xl font-bold capitalize text-white">
-            {activeTab === 'dashboard' ? 'Financial Overview (₦)' : activeTab}
+            {activeTab === 'dashboard' ? `Welcome, ${currentUser.name} (₦)` : activeTab}
           </h2>
         </div>
         <div className="flex items-center gap-3">
@@ -155,6 +165,7 @@ export default function App() {
             budgetLimit={budgetLimit}
             goals={goals}
             bills={bills}
+            onLogout={() => setCurrentUser(null)}
           />
         )}
       </main>
