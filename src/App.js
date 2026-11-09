@@ -9,6 +9,7 @@ import Settings from './components/Settings';
 import TransactionModal from './components/TransactionModal';
 import AssetModal from './components/AssetModal';
 import UserGuideModal from './components/UserGuideModal';
+import SalaryPlannerModal from './components/SalaryPlannerModal';
 import { loadData, saveData } from './utils/storage';
 
 export default function App() {
@@ -158,44 +159,11 @@ export default function App() {
         )}
       </main>
 
-      {/* Salary Planner Modal */}
-      {showSalaryPlanner && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl w-full max-w-lg shadow-2xl space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-lg text-white flex items-center gap-2">
-                <Sparkles size={20} className="text-emerald-400" /> Salary Budget Planner (50/30/20 Rule)
-              </h3>
-              <button onClick={() => setShowSalaryPlanner(false)} className="text-slate-400 hover:text-white">✕</button>
-            </div>
-            <p className="text-xs text-slate-300">
-              Enter your monthly salary to automatically split it into Needs (50%), Wants/Airtime (30%), and Savings/Investments (20%):
-            </p>
-            <div className="space-y-3 pt-2">
-              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <p className="text-xs text-slate-400">Recommended Needs (Rent, Utilities, Food): <span className="text-white font-bold">50%</span></p>
-                <p className="text-lg font-bold text-blue-400 mt-1">₦{(totalIncome * 0.5).toLocaleString()}</p>
-              </div>
-              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <p className="text-xs text-slate-400">Recommended Wants & Airtime/Data: <span className="text-white font-bold">30%</span></p>
-                <p className="text-lg font-bold text-amber-400 mt-1">₦{(totalIncome * 0.3).toLocaleString()}</p>
-              </div>
-              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <p className="text-xs text-slate-400">Recommended Savings & Investments: <span className="text-white font-bold">20%</span></p>
-                <p className="text-lg font-bold text-emerald-400 mt-1">₦{(totalIncome * 0.2).toLocaleString()}</p>
-              </div>
-            </div>
-            <div className="flex justify-end pt-2">
-              <button 
-                onClick={() => setShowSalaryPlanner(false)}
-                className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-xl text-sm font-semibold"
-              >
-                Got It
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SalaryPlannerModal 
+        isOpen={showSalaryPlanner}
+        onClose={() => setShowSalaryPlanner(false)}
+        totalIncome={totalIncome}
+      />
 
       <UserGuideModal isOpen={showGuide} onClose={() => setShowGuide(false)} />
 
