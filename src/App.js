@@ -12,6 +12,7 @@ import { loadData, saveData } from './utils/storage';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showGuide, setShowGuide] = useState(false);
   
   const [transactions, setTransactions] = useState(() => loadData('fundflow_transactions', [
     { id: 1, title: 'Monthly Salary', amount: 250000, type: 'income', category: 'Salary', date: '2026-11-01' },
@@ -58,7 +59,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 pb-20 md:pb-0 md:pl-64">
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} onOpenGuide={() => setShowGuide(true)} />
 
       <header className="bg-slate-950/80 backdrop-blur border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3 md:hidden">
@@ -73,7 +74,6 @@ export default function App() {
           </h2>
         </div>
         <div className="flex items-center gap-3">
-          <UserGuideModal />
           <button 
             onClick={() => setShowSalaryPlanner(true)}
             className="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-emerald-600/20 transition"
@@ -151,7 +151,7 @@ export default function App() {
                 <p className="text-xs text-slate-400">Recommended Wants & Airtime/Data: <span className="text-white font-bold">30%</span></p>
                 <p className="text-lg font-bold text-amber-400 mt-1">₦{(totalIncome * 0.3).toLocaleString()}</p>
               </div>
-              <div className="bg-slate-900 p-4ronunded-xl border border-slate-800">
+              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
                 <p className="text-xs text-slate-400">Recommended Savings & Investments: <span className="text-white font-bold">20%</span></p>
                 <p className="text-lg font-bold text-emerald-400 mt-1">₦{(totalIncome * 0.2).toLocaleString()}</p>
               </div>
@@ -167,6 +167,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <UserGuideModal isOpen={showGuide} onClose={() => setShowGuide(false)} />
 
       <TransactionModal 
         isOpen={showTxModal}

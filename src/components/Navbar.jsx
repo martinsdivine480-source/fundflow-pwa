@@ -1,7 +1,7 @@
 import React from 'react';
-import { LayoutDashboard, Wallet, TrendingUp, Settings as SettingsIcon, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, Wallet, TrendingUp, Settings as SettingsIcon, ShieldCheck, HelpCircle } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab }) {
+export default function Navbar({ activeTab, setActiveTab, onOpenGuide }) {
   return (
     <>
       {/* Desktop Sidebar */}
@@ -11,8 +11,8 @@ export default function Navbar({ activeTab, setActiveTab }) {
             <TrendingUp size={24} />
           </div>
           <div>
-            <h1 className="font-bold text-xl text-white tracking-wide">FundFlow</h1>
-            <p className="text-xs text-slate-400">Wealth & Expense Tracker</p>
+            <h1 className="font-bold text-xl text-white tracking-wide">FundFlow NG</h1>
+            <p className="text-xs text-slate-400">Naira Wealth & Budget</p>
           </div>
         </div>
 
@@ -27,7 +27,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
             onClick={() => setActiveTab('expenses')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab === 'expenses' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'}`}
           >
-            <Wallet size={20} /> Expenses & Budget
+            <Wallet size={20} /> Expenses & Airtime
           </button>
           <button 
             onClick={() => setActiveTab('investments')}
@@ -40,6 +40,12 @@ export default function Navbar({ activeTab, setActiveTab }) {
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition ${activeTab === 'settings' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'}`}
           >
             <SettingsIcon size={20} /> Settings & Privacy
+          </button>
+          <button 
+            onClick={onOpenGuide}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition"
+          >
+            <HelpCircle size={20} /> How to Use
           </button>
         </nav>
 
@@ -80,6 +86,13 @@ export default function Navbar({ activeTab, setActiveTab }) {
         >
           <SettingsIcon size={20} />
           <span className="text-[10px]">Settings</span>
+        </button>
+        <button 
+          onClick={onOpenGuide}
+          className="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500"
+        >
+          <HelpCircle size={20} />
+          <span className="text-[10px]">Guide</span>
         </button>
       </nav>
     </>
