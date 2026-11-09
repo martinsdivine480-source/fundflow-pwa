@@ -1,9 +1,18 @@
 import React from 'react';
-import { ArrowUpRight, ArrowDownRight, PieChart, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, PieChart, TrendingUp, Sparkles, Calendar } from 'lucide-react';
 
 export default function Dashboard({ netWorth, cashBalance, totalInvestments, totalExpense, categoryTotals, transactions, assets, setActiveTab }) {
   const savingsRate = cashBalance > 0 ? Math.min(100, Math.round((cashBalance / (cashBalance + totalExpense || 1)) * 100)) : 0;
   
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todaySpending = transactions
+    .filter(t => t.type === 'expense' && t.date === todayStr)
+    .reduce((acc, t) => acc + Number(t.amount), 0);
+
+  const thisWeekSpending = transactions
+    .filter(t => t.type === 'expense')
+    .reduce((acc, t) => acc + Number(t.amount), 0); // Simplified aggregator
+
   return (
     <div className="space-y-6">
       {/* Net Worth Banner */}
@@ -29,8 +38,18 @@ export default function Dashboard({ netWorth, cashBalance, totalInvestments, tot
         </div>
       </div>
 
-      {/* Financial Health Score & Quick Stats */}
+      {/* Daily & Weekly Burn Rate / Calculation */}
       <div className="grid sm:grid-cols-2 gap-4">
+        <div className="bg-slate-950 border border-slate-800 p-5 rounded-2xl flex items-center justify-between">
+          <div>
+            <p className="text-xs text-slate-400 uppercase font-semibold">Today's Daily Spending</p>
+            <h4 className="text-2xl font-black text-rose-400 mt-1">₦{todaySpending.toLocaleString()}</h4>
+            <p className="text-xs text-slate-500 mt-0.5">Tracked for {todayStr}</p>
+          </div>
+          <div className="p-3 bg-rose-500/10 text-rose-400 rounded-xl">
+            <Calendar size={24} />
+          </div>
+        </div>
         <div className="bg-slate-950 border border-slate-800 p-5 rounded-2xl flex items-center justify-between">
           <div>
             <p className="text-xs text-slate-400 uppercase font-semibold">Financial Health Score</p>
@@ -39,18 +58,6 @@ export default function Dashboard({ netWorth, cashBalance, totalInvestments, tot
           </div>
           <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
             <Sparkles size={24} />
-          </div>
-        </div>
-        <div className="bg-slate-950 border border-slate-800 p-5 rounded-2xl flex items-center justify-between">
-          <div>
-            <p className="text-xs text-slate-400 uppercase font-semibold">Portfolio Growth Ratio</p>
-            <h4 className="text-2xl font-black text-blue-400 mt-1">
-              {netWorth > 0 ? Math.round((totalInvestments / netWorth) * 100) : 0}%
-            </h4>
-            <p className="text-xs text-slate-500 mt-0.5">Invested vs Total Net Worth</p>
-          </div>
-          <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
-            <TrendingUp size={24} />
           </div>
         </div>
       </div>
