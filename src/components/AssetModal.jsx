@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 
+const COMMON_ASSETS = [
+  { name: 'MTN Nigeria (MTNN)', type: 'Stock', defaultPrice: 220 },
+  { name: 'Dangote Cement (DANGCEM)', type: 'Stock', defaultPrice: 650 },
+  { name: 'Zenith Bank (ZENITHBANK)', type: 'Stock', defaultPrice: 38 },
+  { name: 'GTCO Holdings (GTCO)', type: 'Stock', defaultPrice: 45 },
+  { name: 'Access Holdings (ACCESSCORP)', type: 'Stock', defaultPrice: 24 },
+  { name: 'Transcorp Nigeria (TRANSCORP)', type: 'Stock', defaultPrice: 12 },
+  { name: 'Bitcoin (BTC)', type: 'Crypto', defaultPrice: 105000000 },
+  { name: 'Ethereum (ETH)', type: 'Crypto', defaultPrice: 4200000 },
+  { name: 'USDT (Tether)', type: 'Crypto', defaultPrice: 1650 },
+  { name: 'FGN Savings Bond / Treasury Bills', type: 'Treasury Bills', defaultPrice: 1000 },
+  { name: 'Landed Property / Real Estate', type: 'Real Estate', defaultPrice: 5000000 },
+];
+
 export default function AssetModal({ isOpen, onClose, onAdd }) {
   const [name, setName] = useState('');
   const [type, setType] = useState('Stock');
@@ -7,6 +21,16 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
   const [price, setPrice] = useState('');
 
   if (!isOpen) return null;
+
+  const handleSelectPreset = (e) => {
+    const selectedName = e.target.value;
+    setName(selectedName);
+    const found = COMMON_ASSETS.find(a => a.name === selectedName);
+    if (found) {
+      setType(found.type);
+      setPrice(found.defaultPrice);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,13 +51,28 @@ export default function AssetModal({ isOpen, onClose, onAdd }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
       <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
-        <h3 className="text-xl font-bold text-white mb-4">Add New Asset</h3>
+        <h3 className="text-xl font-bold text-white mb-4">Add New Investment Asset</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Quick Select Investment</label>
+            <select
+              onChange={handleSelectPreset}
+              defaultValue=""
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 mb-2"
+            >
+              <option value="" disabled>-- Choose Nigerian Stock, Crypto or Asset --</option>
+              {COMMON_ASSETS.map((asset, idx) => (
+                <option key={idx} value={asset.name}>
+                  {asset.name} ({asset.type})
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">Asset Name</label>
             <input
               type="text"
-              placeholder="e.g. MTN Nigeria or Bitcoin"
+              placeholder="e.g. MTN Nigeria or Custom Asset"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500"

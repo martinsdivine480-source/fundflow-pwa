@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { TrendingUp, PlusCircle, Trash2, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { TrendingUp, PlusCircle, Trash2 } from 'lucide-react';
 
-export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
-  const totalValue = assets.reduce((sum, a) => {
-    const qty = Number(a.shares || a.units || 0);
-    const price = Number(a.purchasePrice || a.price || 0);
-    return sum + (qty * price);
-  }, 0);
+export default function Investments({ assets, setAssets, totalInvestments, setShowAssetModal }) {
+  const handleDelete = (id) => {
+    setAssets(assets.filter(a => a.id !== id));
+  };
 
   return (
     <div className="space-y-6">
@@ -19,8 +17,9 @@ export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
           <p className="text-slate-400 text-sm mt-1">Track your Nigerian stocks, treasury bills, crypto, and real estate in Naira (₦).</p>
         </div>
         <button
-          onClick={onAddAsset}
-          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition shadow-lg shadow-emerald-500/20"
+          type="button"
+          onClick={() => setShowAssetModal(true)}
+          className="flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer"
         >
           <PlusCircle className="w-5 h-5" />
           Add Asset
@@ -29,7 +28,7 @@ export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
 
       <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
         <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">Total Portfolio Value</span>
-        <div className="text-4xl font-extrabold text-white mt-1">₦{totalValue.toLocaleString()}</div>
+        <div className="text-4xl font-extrabold text-white mt-1">₦{totalInvestments.toLocaleString()}</div>
       </div>
 
       <div className="space-y-4">
@@ -42,7 +41,7 @@ export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {assets.map((asset) => {
               const qty = Number(asset.shares || asset.units || 0);
-              const price = Number(asset.purchasePrice || asset.price || 0);
+              const price = Number(asset.purchasePrice || asset.valuePerShare || asset.price || 0);
               const val = qty * price;
               return (
                 <div key={asset.id} className="bg-slate-900/50 border border-slate-800 p-5 rounded-xl flex items-center justify-between">
@@ -52,7 +51,7 @@ export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
                     </span>
                     <h4 className="text-lg font-bold text-white">{asset.name}</h4>
                     <p className="text-sm text-slate-400 mt-1">
-                      {qty} units @ ₦{price.toLocaleString()}
+                      {qty.toLocaleString()} units @ ₦{price.toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right flex flex-col items-end gap-2">
@@ -61,8 +60,9 @@ export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
                       <span className="text-xl font-bold text-emerald-400">₦{val.toLocaleString()}</span>
                     </div>
                     <button
-                      onClick={() => onDeleteAsset(asset.id)}
-                      className="text-slate-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition"
+                      type="button"
+                      onClick={() => handleDelete(asset.id)}
+                      className="text-slate-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition cursor-pointer"
                       title="Delete asset"
                     >
                       <Trash2 className="w-4 h-4" />
