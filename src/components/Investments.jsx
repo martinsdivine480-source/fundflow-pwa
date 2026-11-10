@@ -1,81 +1,77 @@
 import React, { useState } from 'react';
-import { TrendingUp, PlusCircle, Trash2, ArrowUpRight } from 'lucide-react';
+import { TrendingUp, PlusCircle, Trash2, ArrowUpRight, ShieldCheck } from 'lucide-react';
 
-export default function Investments({ assets, onOpenModal, onDeleteAsset }) {
-  const totalPortfolioValue = assets.reduce((acc, curr) => acc + (Number(curr.shares) * Number(curr.purchasePrice)), 0);
+export default function Investments({ assets, onAddAsset, onDeleteAsset }) {
+  const totalValue = assets.reduce((sum, a) => {
+    const qty = Number(a.shares || a.units || 0);
+    const price = Number(a.purchasePrice || a.price || 0);
+    return sum + (qty * price);
+  }, 0);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-emerald-900/60 to-teal-900/60 border border-emerald-700/50 p-6 rounded-2xl shadow-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <TrendingUp className="text-emerald-400" /> Investment Portfolio
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <TrendingUp className="w-7 h-7 text-emerald-400" />
+            Investment Portfolio
           </h2>
-          <p className="text-emerald-200 text-sm mt-1">Track your Nigerian stocks, treasury bills, crypto, and real estate in Naira (₦).</p>
+          <p className="text-slate-400 text-sm mt-1">Track your Nigerian stocks, treasury bills, crypto, and real estate in Naira (₦).</p>
         </div>
-        <div className="text-left sm:text-right">
-          <p className="text-xs text-emerald-300 font-medium">Total Portfolio Value</p>
-          <p className="text-2xl font-black text-emerald-400">₦{totalPortfolioValue.toLocaleString()}</p>
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold text-white">Your Assets</h3>
         <button
-          onClick={onOpenModal}
-          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl transition shadow-md hover:shadow-emerald-600/20"
+          onClick={onAddAsset}
+          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold rounded-xl transition shadow-lg shadow-emerald-500/20"
         >
-          <PlusCircle size={18} /> Add Asset
+          <PlusCircle className="w-5 h-5" />
+          Add Asset
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+        <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">Total Portfolio Value</span>
+        <div className="text-4xl font-extrabold text-white mt-1">₦{totalValue.toLocaleString()}</div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-white">Your Assets</h3>
         {assets.length === 0 ? (
-          <div className="col-span-2 text-center py-12 bg-slate-900/40 border border-slate-800 rounded-2xl">
-            <TrendingUp className="mx-auto text-slate-600 mb-3" size={40} />
-            <p className="text-slate-400 font-medium">No investments added yet.</p>
-            <p className="text-slate-500 text-sm mt-1">Click "Add Asset" to start tracking your wealth in Naira.</p>
+          <div className="text-center py-12 bg-slate-900/30 border border-slate-800/80 rounded-2xl">
+            <p className="text-slate-400">No assets added yet. Click 'Add Asset' to start tracking your investments.</p>
           </div>
         ) : (
-          assets.map((asset, index) => {
-            const currentValue = Number(asset.shares) * Number(asset.purchasePrice);
-            return (
-              <div key={index} className="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between hover:border-emerald-500/40 transition">
-                <div>
-                  <div className="flex justify-between items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {assets.map((asset) => {
+              const qty = Number(asset.shares || asset.units || 0);
+              const price = Number(asset.purchasePrice || asset.price || 0);
+              const val = qty * price;
+              return (
+                <div key={asset.id} className="bg-slate-900/50 border border-slate-800 p-5 rounded-xl flex items-center justify-between">
+                  <div>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 mb-2">
+                      {asset.type}
+                    </span>
+                    <h4 className="text-lg font-bold text-white">{asset.name}</h4>
+                    <p className="text-sm text-slate-400 mt-1">
+                      {qty} units @ ₦{price.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="text-right flex flex-col items-end gap-2">
                     <div>
-                      <span className="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-lg">
-                        {asset.type}
-                      </span>
-                      <h4 className="text-lg font-bold text-white mt-2">{asset.name}</h4>
-                      <p className="text-slate-400 text-xs font-mono mt-0.5">{asset.ticker}</p>
+                      <span className="text-xs text-slate-400 block">Total Value</span>
+                      <span className="text-xl font-bold text-emerald-400">₦{val.toLocaleString()}</span>
                     </div>
                     <button
-                      onClick={() => onDeleteAsset(index)}
-                      className="text-slate-500 hover:text-rose-400 transition p-1.5 rounded-lg hover:bg-rose-500/10"
+                      onClick={() => onDeleteAsset(asset.id)}
+                      className="text-slate-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-slate-800 transition"
                       title="Delete asset"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-800/80">
-                    <div>
-                      <p className="text-xs text-slate-400">Holdings</p>
-                      <p className="text-sm font-semibold text-slate-200 mt-0.5">
-                        {asset.shares} units @ ₦{Number(asset.purchasePrice).toLocaleString()}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-400">Total Value</p>
-                      <p className="text-base font-black text-emerald-400 mt-0.5">
-                        ₦{currentValue.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </div>
     </div>
