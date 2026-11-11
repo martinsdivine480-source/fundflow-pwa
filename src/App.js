@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PlusCircle, TrendingUp, Sparkles, Download, RefreshCw, Search, Trash2, ArrowUpRight, ArrowDownRight, PieChart, Wallet, Settings as SettingsIcon, LayoutDashboard, ShieldCheck, Target } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
@@ -24,8 +24,8 @@ export default function App() {
   ]));
 
   const [assets, setAssets] = useState(() => loadData('fundflow_assets', [
-    { id: 1, name: 'Treasury Bills / FGN Bond', symbol: 'FGN', shares: 100000, valuePerShare: 1, type: 'Savings' },
-    { id: 2, name: 'Nigerian Stocks (Zenith Bank)', symbol: 'ZENITHBANK', shares: 500, valuePerShare: 38, type: 'Stock' }
+    { id: 1, name: 'Treasury Bills / FGN Bond', symbol: 'FGN', shares: 50000, purchasePrice: 1, type: 'Savings' },
+    { id: 2, name: 'Nigerian Stocks (Zenith Bank)', symbol: 'ZENITHBANK', shares: 500, purchasePrice: 38, type: 'Stock' }
   ]));
 
   const [goals, setGoals] = useState(() => loadData('fundflow_goals', [
@@ -66,8 +66,13 @@ export default function App() {
 
   const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + Number(t.amount), 0);
   const totalExpense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + Number(t.amount), 0);
-  const cashBalance = totalIncome - totalExpense;
-  const totalInvestments = assets.reduce((acc, a) => acc + (Number(a.shares) * Number(a.valuePerShare)), 0);
+  
+  // Total investment cost (amount used from cash balance to purchase assets)
+  const totalInvestmentCost = assets.reduce((acc, a) => acc + (Number(a.shares || a.units || 0) * Number(a.purchasePrice || a.price || 0)), 0);
+  const totalInvestments = totalInvestmentCost;
+
+  // Fintech OPay style cash balance: Total Income minus Expenses minus Cash spent on Investments
+  const cashBalance = totalIncome - totalExpense - totalInvestmentCost;
   const netWorth = cashBalance + totalInvestments;
 
   const categoryTotals = transactions
@@ -76,6 +81,21 @@ export default function App() {
       acc[t.category] = (acc[t.category] || 0) + Number(t.amount);
       return acc;
     }, {});
+
+  const handleAddAsset = (newAsset) => {
+    const cost = Number(newAsset.shares) * Number(newAsset.purchasePrice);
+    setAssets([newAsset, ...assets]);
+    // Also log this investment purchase as an expense/investment debit from the main cash balance
+    const investmentTx = {
+      id: Date.now(),
+      title: `Investment: ${newAsset.name}`,
+      amount: cost,
+      type: 'expense',
+      category: 'Investments',
+      date: new Date().toISOString().split('T')[0]
+    };
+    setTransactions([investmentTx, ...transactions]);
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 pb-20 md:pb-0 md:pl-64">
@@ -176,7 +196,7 @@ export default function App() {
       <AssetModal 
         isOpen={showAssetModal}
         onClose={() => setShowAssetModal(false)}
-        onAdd={(newAsset) => setAssets([newAsset, ...assets])}
+        onAdd={handleAddAsset}
       />
     </div>
   );
